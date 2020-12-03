@@ -51,13 +51,13 @@ send("Smokescreen!")
 
 ###### Sensor apk
 
-This APK I wrote testing the accelerometer, gyro and gps values. Writing your own apps and testing it with frida gives you a deeper understanding of how the internals of android source code works. I would encourage anyone learning frida with android to atleast the fundamentals of android applications. Android dev documentation for Java is quite good.
+This APK I wrote from scratch to test the accelerometer, gyro and gps values. Deveoping your own apps for frida gives you a deeper understanding of how the internals of android source code works. I would encourage anyone learning frida with android to atleast learn the fundamentals of developing your own apps. Android dev documentation is quite good, so it's not hard for beginners. (Assuming you know how to code already)
 
-For the scope of this tutorial we will only look at motion sensor data manipluation, however the app handles gps. Reverse and inject at will! 
+For the scope of this tutorial we will only look at motion sensor data manipluation, however the app handles gps. This can be done on your own time if you're interested! 
 
 Here is the usage for sensors according to android: https://developer.android.com/guide/topics/sensors/sensors_motion#java
 
-My accelerometer and gyro source code snippets for this application. 
+My accelerometer and gyro source code snippets for this application. Worth opening up the APK in JADX-GUI to understand the full scope. 
  
 ```
 
