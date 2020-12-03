@@ -7,7 +7,7 @@ This tutorial will document some basic frida techniques to bypass sensor injecti
 
 
 
-###### Basic frida script setup
+## Basic frida script setup
 
 For every frida script this will generally be your basic format. I won't cover how to set up your AVD with frida-server as that is well documented elsewhere. In this example I'll be using a test APK that I made that is located in the /APK/ of this project. 
 
@@ -37,7 +37,7 @@ sys.stdin.read()
 ```
 
 
-###Sensors.js
+######Sensors.js
 ```
 Java.perform(function() {
 send("Smokescreen!")
