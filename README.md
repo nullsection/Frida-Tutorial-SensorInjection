@@ -37,7 +37,7 @@ sys.stdin.read()
 ```
 
 
-######Sensors.js
+###### Sensors.js
 ```
 Java.perform(function() {
 send("Smokescreen!")
