@@ -1,8 +1,10 @@
 # Frida Tutorial: Android Sensor Injection
 
-These days its quite common for android malware to perform a number of anti-emulation techniques to deter dynamic malware analysis. One of the more advanced techniques is performing calculations on sensor values returned from the accelerometer, gyroscope or GPS data. A good example of this is the Anubis malware.
+These days its quite common for android malware to perform a number of anti-emulation techniques to deter dynamic malware analysis. One of the more advanced techniques is performing calculations on sensor values returned from the accelerometer, gyroscope or GPS data. A good example of this is the Anubis malware. 
 
-This tutorial will document some basic frida techniques to bypass sensor injection alongside android source code reversing. 
+For example, lets say we want a malicious function to occur when our phone is 'accelerating'. Our accelerometer has 3 axis points of information, from there is quite easy to calculate a formula to determine whether our device is moving realistically or not.
+
+This tutorial will document some basic frida techniques to bypass sensor injection by overloading android source code functions within our taget process. It may be easier to overload our specific function to return true, but for automation purposes overloading our sensor returns makes life easier for dynamic analysis. 
 
 
 
@@ -51,7 +53,7 @@ send("Smokescreen!")
 
 ###### Sensor apk
 
-This APK I wrote from scratch to test the accelerometer, gyro and gps values. Deveoping your own apps for frida gives you a deeper understanding of how the internals of android source code works. I would encourage anyone learning frida with android to atleast learn the fundamentals of developing your own apps. Android dev documentation is quite good, so it's not hard for beginners. (Assuming you know how to code already)
+This APK I developed from scratch to test the accelerometer, gyro and gps values. Deveoping your own apps for frida gives you a deeper understanding of how the internals of android source code works. I would encourage anyone learning frida with android to atleast learn the fundamentals of developing your own app. Android dev documentation is quite good, so it's not hard for beginners. (Assuming you know how to code already)
 
 For the scope of this tutorial we will only look at motion sensor data manipluation, however the app handles gps. This can be done on your own time if you're interested! 
 
@@ -98,8 +100,11 @@ My accelerometer and gyro source code snippets for this application. Worth openi
 ```
 
 
+Based on the code snippet  ``` sensorManager = ( SensorManager) getSystemService(SENSOR_SERVICE); ``` we can determine that we should take a peak into the SensorManager service. The most valuable source for Frida in Android is the SDK source code which can be found here: 
 
+> https://github.com/AndroidSDKSources - Find your AVD SDK. 
 
+Doing some research on the Android Dev website comes up with 
 
 
 
