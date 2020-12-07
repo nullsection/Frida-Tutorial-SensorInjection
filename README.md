@@ -22,8 +22,7 @@ import time
 
 
 def on_message(message, data):
-    if message['type'] == 'send':
-        print("[* ] + message)")
+    print(message)
 
 
 device = frida.get_usb_device()
@@ -114,6 +113,6 @@ Doing some research on the Android Dev website we can find information on how An
 
 > https://developer.android.com/reference/android/hardware/SensorEvent
 
-
+From this information we can assume that there must be a dispatcher for handling events. Doings a quick search of the repository for Sensor Manager returns the class android/hardware/SystemSensorManager.java. 
 
 
