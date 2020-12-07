@@ -104,7 +104,11 @@ Based on the code snippet  ``` sensorManager = ( SensorManager) getSystemService
 
 > https://github.com/AndroidSDKSources - Find your AVD SDK. 
 
-Doing some research on the Android Dev website comes up with 
+
+
+Doing some research on the Android Dev website we can find information on how Android handles sensor events. 
+
+> https://developer.android.com/reference/android/hardware/SensorEvent
 
 
 
