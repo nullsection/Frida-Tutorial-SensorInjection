@@ -99,14 +99,18 @@ My accelerometer and gyro source code snippets for this application. Worth openi
 
 ```
 
+### Diving into Android
 
 Based on the code snippet  ``` sensorManager = ( SensorManager) getSystemService(SENSOR_SERVICE); ``` we can determine that we should take a peak into the SensorManager service. The most valuable source for Frida in Android is the SDK source code which can be found here: 
+
 
 > https://github.com/AndroidSDKSources - Find your AVD SDK. 
 
 
 
+
 Doing some research on the Android Dev website we can find information on how Android handles sensor events. 
+
 
 > https://developer.android.com/reference/android/hardware/SensorEvent
 
