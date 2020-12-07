@@ -20,16 +20,16 @@ import os
 import sys
 import time
 
+
 def on_message(message, data):
     if message['type'] == 'send':
-        print("[*] {0}".format(message['payload']))
-    else:
-        print(message)
+        print("[* ] + message)")
+
 
 device = frida.get_usb_device()
-pid = device.spawn(["com.example.sensor"]) #PackageName
+pid = device.spawn(["com.example.sensor"])
 session = device.attach(pid)
-f = open("C:../../Sensors.js")
+f = open("C:/Path2Script")
 script = session.create_script(f.read())
 script.on('message', on_message)
 script.load()
