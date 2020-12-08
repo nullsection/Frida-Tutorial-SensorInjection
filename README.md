@@ -113,6 +113,29 @@ Doing some research on the Android Dev website we can find information on how An
 
 > https://developer.android.com/reference/android/hardware/SensorEvent
 
-From this information we can assume that there must be a dispatcher for handling events. Doings a quick search of the repository for Sensor Manager returns the class android/hardware/SystemSensorManager.java. 
+From this information we can assume that there must be a dispatcher for handling events. Doings a quick search of the repository for Sensor Manager returns the class android/hardware/SystemSensorManager.java. Lets take a look at the function registerListener to get an idea whether we're in the right spot. Working with Android anytime I see 'Impl' on the end of a function, it tends to be the one used to pass data. So lets start there. 
+
+
+```
+var systemSensorManager = Java.use('android.hardware.SystemSensorManager');
+     systemSensorManager.registerListenerImpl.overload('android.hardware.SensorEventListener', 'android.hardware.Sensor',
+        'int', 'android.os.Handler', 'int', 'int').implementation = function(listener, sensor, delay, handler, Latency, reservedFlags) {
+         
+          if(sensor != null){
+          send("Hooked for sensor: " + sensor)
+          }
+
+         return this.registerListenerImpl.call(this, listener, sensor, delay, handler, Latency, reservedFlags);
+        }
+
+```
+
+
+Using this script we get the output: 
+
+> {'type': 'send', 'payload': 'Smokescreen!'}
+{'type': 'send', 'payload': 'Hooked for sensor: {Sensor name="Goldfish 3-axis Accelerometer", vendor="The Android Open Source Project", version=1, type=1, maxRange=2.8, resolution=2.480159E-4, power=3.0, minDelay=10000}'}
+
+
 
 
