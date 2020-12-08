@@ -134,6 +134,7 @@ var systemSensorManager = Java.use('android.hardware.SystemSensorManager');
 Using this script we get the output: 
 
 > {'type': 'send', 'payload': 'Smokescreen!'}
+
 {'type': 'send', 'payload': 'Hooked for sensor: {Sensor name="Goldfish 3-axis Accelerometer", vendor="The Android Open Source Project", version=1, type=1, maxRange=2.8, resolution=2.480159E-4, power=3.0, minDelay=10000}'}
 
 
