@@ -7,7 +7,7 @@ For example, lets say we want a malicious function to occur when our phone is 'a
 This tutorial will document some basic frida techniques to bypass sensor injection by overloading android source code functions within our taget process. It may be easier to overload our specific function to return true, but for automation purposes overloading our sensor returns makes life easier for dynamic analysis. 
 \
 \
-\
+
 
 ## Basic frida script setup
 
@@ -54,7 +54,7 @@ send("Smokescreen!")
 ```
 \
 \
-\
+
 
 ###### Sensor apk
 
@@ -105,7 +105,7 @@ My accelerometer and gyro source code snippets for this application. Worth openi
 ```
 \
 \
-\
+
 
 
 ## Diving into Android
@@ -114,6 +114,7 @@ Based on the code snippet  ``` sensorManager = ( SensorManager) getSystemService
 
 
 > https://github.com/AndroidSDKSources - Find your AVD SDK. 
+
 \
 \
 
@@ -124,6 +125,7 @@ Doing some research on the Android Dev website we can find information on how An
 > https://developer.android.com/reference/android/hardware/SensorEvent
 
 From this information we can assume that there must be a dispatcher for handling events. Doings a quick search of the repository for Sensor Manager returns the class android/hardware/SystemSensorManager.java. Lets take a look at the function registerListener to get an idea whether we're in the right spot.
+
 \
 \
 
