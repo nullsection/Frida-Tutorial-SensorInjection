@@ -6,7 +6,7 @@ For example, lets say we want a malicious function to occur when our phone is 'a
 
 This tutorial will document some basic frida techniques to bypass sensor injection by overloading android source code functions within our taget process. It may be easier to overload our specific function to return true, but for automation purposes overloading our sensor returns makes life easier for dynamic analysis. 
 <br />
-
+<br />
 
 ## Basic frida script setup
 
