@@ -12,7 +12,6 @@ This tutorial will document some basic frida techniques to bypass sensor injecti
 
 For every frida script this will generally be your basic format. I won't cover how to set up your AVD with frida-server or adb commands as that is well documented elsewhere. In this example I'll be using a test APK that I made that is located in the /APK/ of this project. 
 <br />
-<br />
 
 ###### fridaScript.py
 ```
@@ -104,8 +103,6 @@ My accelerometer and gyro source code snippets for this application. Worth openi
 <br />
 <br />
 
-
-
 ## Diving into Android
 
 Based on the code snippet  ``` sensorManager = ( SensorManager) getSystemService(SENSOR_SERVICE); ``` we can determine that we should take a peak into the SensorManager service. The most valuable source for Frida in Android is the SDK source code which can be found here: 
@@ -165,6 +162,7 @@ We can see we're looking in the corect place. For more useful information you ca
 <br />
 <br />
 <br />
+
 ### Injecting Sensor Values
 
 
