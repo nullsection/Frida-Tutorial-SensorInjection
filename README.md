@@ -37,7 +37,6 @@ device.resume(pid)
 sys.stdin.read()
 ```
 <br />
-<br />
 
 ###### Sensors.js
 ```
@@ -50,7 +49,6 @@ send("Smokescreen!")
 
 
 ```
-<br />
 <br />
 
 ###### Sensor apk
@@ -111,7 +109,6 @@ Based on the code snippet  ``` sensorManager = ( SensorManager) getSystemService
 > https://github.com/AndroidSDKSources - Find your AVD SDK. 
 
 <br />
-<br />
 
 
 Doing some research on the Android Dev website we can find information on how Android handles sensor events. 
@@ -122,7 +119,6 @@ Doing some research on the Android Dev website we can find information on how An
 From this information we can assume that there must be a dispatcher for handling events. Doings a quick search of the repository for Sensor Manager returns the class android/hardware/SystemSensorManager.java. Lets take a look at the function registerListener to get an idea whether we're in the right spot.
 
 <br />
-<br />
 
 ```
  public boolean registerListener(SensorEventListener listener, Sensor sensor,
@@ -132,10 +128,10 @@ From this information we can assume that there must be a dispatcher for handling
     }
 
 ```
+<br />
 
 Working with Android anytime I see 'Impl' on the end of a function, it tends to be the one used to pass data oppose to the high level functions. So lets start there. 
 
-<br />
 <br />
 
 ```
@@ -151,7 +147,7 @@ var systemSensorManager = Java.use('android.hardware.SystemSensorManager');
         }
 
 ```
-
+<br />
 
 We can see we're looking in the corect place. For more useful information you can send the value 'handle' pointing to the class that is calling registerSensor(). Using this script we get the output: 
 
@@ -168,7 +164,7 @@ We can see we're looking in the corect place. For more useful information you ca
 
 From our research previously on the Android Developer website, we should see some sensor event objects located either in or around sensor manager. After doing a quick scan of the class we can see the sensor event queue implementation. 
 
-
+<br />
 
 ###### Sensor Event Dispatcher
 
