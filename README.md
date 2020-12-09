@@ -5,11 +5,15 @@ These days its quite common for android malware to perform a number of anti-emul
 For example, lets say we want a malicious function to occur when our phone is 'accelerating'. Our accelerometer has 3 axis points of information, from there is quite easy to calculate a formula to determine whether our device is moving realistically or not.
 
 This tutorial will document some basic frida techniques to bypass sensor injection by overloading android source code functions within our taget process. It may be easier to overload our specific function to return true, but for automation purposes overloading our sensor returns makes life easier for dynamic analysis. 
-\\
+\
+\
+\
 
 ## Basic frida script setup
 
 For every frida script this will generally be your basic format. I won't cover how to set up your AVD with frida-server or adb commands as that is well documented elsewhere. In this example I'll be using a test APK that I made that is located in the /APK/ of this project. 
+\
+\
 
 ###### fridaScript.py
 ```
@@ -34,7 +38,8 @@ time.sleep(1)  # fails without this sleep
 device.resume(pid)
 sys.stdin.read()
 ```
-
+\
+\
 
 ###### Sensors.js
 ```
@@ -47,7 +52,9 @@ send("Smokescreen!")
 
 
 ```
-
+\
+\
+\
 
 ###### Sensor apk
 
@@ -96,7 +103,9 @@ My accelerometer and gyro source code snippets for this application. Worth openi
 
 
 ```
-
+\
+\
+\
 
 
 ## Diving into Android
@@ -105,8 +114,8 @@ Based on the code snippet  ``` sensorManager = ( SensorManager) getSystemService
 
 
 > https://github.com/AndroidSDKSources - Find your AVD SDK. 
-
-
+\
+\
 
 
 Doing some research on the Android Dev website we can find information on how Android handles sensor events. 
@@ -115,7 +124,8 @@ Doing some research on the Android Dev website we can find information on how An
 > https://developer.android.com/reference/android/hardware/SensorEvent
 
 From this information we can assume that there must be a dispatcher for handling events. Doings a quick search of the repository for Sensor Manager returns the class android/hardware/SystemSensorManager.java. Lets take a look at the function registerListener to get an idea whether we're in the right spot.
-
+\
+\
 
 ```
  public boolean registerListener(SensorEventListener listener, Sensor sensor,
@@ -128,7 +138,8 @@ From this information we can assume that there must be a dispatcher for handling
 
 Working with Android anytime I see 'Impl' on the end of a function, it tends to be the one used to pass data oppose to the high level functions. So lets start there. 
 
-
+\
+\
 ```
 var systemSensorManager = Java.use('android.hardware.SystemSensorManager');
      systemSensorManager.registerListenerImpl.overload('android.hardware.SensorEventListener', 'android.hardware.Sensor',
@@ -149,9 +160,9 @@ We can see we're looking in the corect place. For more useful information you ca
 > {'type': 'send', 'payload': 'Smokescreen!'}
 
 > {'type': 'send', 'payload': 'Hooked for sensor: {Sensor name="Goldfish 3-axis Accelerometer", vendor="The Android Open Source Project", version=1, type=1, maxRange=2.8, resolution=2.480159E-4, power=3.0, minDelay=10000}'}
-
-
-
+\
+\
+\
 ### Injecting Sensor Values
 
 
