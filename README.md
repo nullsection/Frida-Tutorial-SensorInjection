@@ -50,6 +50,7 @@ send("Smokescreen!")
 
 ```
 
+
 ###### Sensor apk
 
 This APK I developed from scratch to test the accelerometer, gyro and gps values. Deveoping your own apps for frida gives you a deeper understanding of how the internals of android source code works. I would encourage anyone learning frida with android to atleast learn the fundamentals of developing your own app. Android dev documentation is quite good, so it's not hard for beginners. (Assuming you know how to code already)
@@ -98,6 +99,8 @@ My accelerometer and gyro source code snippets for this application. Worth openi
 
 ```
 
+
+
 ## Diving into Android
 
 Based on the code snippet  ``` sensorManager = ( SensorManager) getSystemService(SENSOR_SERVICE); ``` we can determine that we should take a peak into the SensorManager service. The most valuable source for Frida in Android is the SDK source code which can be found here: 
@@ -113,7 +116,19 @@ Doing some research on the Android Dev website we can find information on how An
 
 > https://developer.android.com/reference/android/hardware/SensorEvent
 
-From this information we can assume that there must be a dispatcher for handling events. Doings a quick search of the repository for Sensor Manager returns the class android/hardware/SystemSensorManager.java. Lets take a look at the function registerListener to get an idea whether we're in the right spot. Working with Android anytime I see 'Impl' on the end of a function, it tends to be the one used to pass data. So lets start there. 
+From this information we can assume that there must be a dispatcher for handling events. Doings a quick search of the repository for Sensor Manager returns the class android/hardware/SystemSensorManager.java. Lets take a look at the function registerListener to get an idea whether we're in the right spot.
+
+
+```
+ public boolean registerListener(SensorEventListener listener, Sensor sensor,
+            int samplingPeriodUs, int maxReportLatencyUs) {
+        int delay = getDelay(samplingPeriodUs);
+        return registerListenerImpl(listener, sensor, delay, null, maxReportLatencyUs, 0);
+    }
+
+```
+
+Working with Android anytime I see 'Impl' on the end of a function, it tends to be the one used to pass data oppose to the high level functions. So lets start there. 
 
 
 ```
@@ -131,12 +146,65 @@ var systemSensorManager = Java.use('android.hardware.SystemSensorManager');
 ```
 
 
-Using this script we get the output: 
+We can see we're looking in the corect place. For more useful information you can send the value 'handle' pointing to the class that is calling registerSensor(). Using this script we get the output: 
 
 > {'type': 'send', 'payload': 'Smokescreen!'}
 
 > {'type': 'send', 'payload': 'Hooked for sensor: {Sensor name="Goldfish 3-axis Accelerometer", vendor="The Android Open Source Project", version=1, type=1, maxRange=2.8, resolution=2.480159E-4, power=3.0, minDelay=10000}'}
 
+
+
+### Injecting Sensor Values
+
+
+From our research previously on the Android Developer website, we should see some sensor event objects located either in or around sensor manager. After doing a quick scan of the class we can see the sensor event queue implementation. 
+
+
+
+###### Sensor Event Dispatcher
+
+```
+static final class SensorEventQueue extends BaseEventQueue {
+        private final SensorEventListener mListener;
+        private final SparseArray<SensorEvent> mSensorsEvents = new SparseArray<SensorEvent>();
+
+... 
+... 
+
+@Override
+        protected void dispatchSensorEvent(int handle, float[] values, int inAccuracy,
+                long timestamp) {
+            final Sensor sensor = mManager.mHandleToSensor.get(handle);
+            if (sensor == null) {
+                // sensor disconnected
+                return;
+            }
+
+            SensorEvent t = null;
+            synchronized (mSensorsEvents) {
+                t = mSensorsEvents.get(handle);
+            }
+
+            if (t == null) {
+                // This may happen if the client has unregistered and there are pending events in
+                // the queue waiting to be delivered. Ignore.
+                return;
+            }
+            // Copy from the values array.
+            System.arraycopy(values, 0, t.values, 0, t.values.length);
+            t.timestamp = timestamp;
+            t.accuracy = inAccuracy;
+            t.sensor = sensor;
+
+            // call onAccuracyChanged() only if the value changes
+            final int accuracy = mSensorAccuracies.get(handle);
+            if ((t.accuracy >= 0) && (accuracy != t.accuracy)) {
+                mSensorAccuracies.put(handle, t.accuracy);
+                mListener.onAccuracyChanged(t.sensor, t.accuracy);
+            }
+            mListener.onSensorChanged(t);
+        }
+```
 
 
 
