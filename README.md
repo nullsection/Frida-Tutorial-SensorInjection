@@ -159,7 +159,7 @@ We can see we're looking in the corect place. For more useful information you ca
 <br />
 <br />
 
-### Injecting Sensor Values
+## Injecting Sensor Values
 
 
 From our research previously on the Android Developer website, we should see some sensor event objects located either in or around sensor manager. After doing a quick scan of the class we can see the sensor event queue implementation. 
