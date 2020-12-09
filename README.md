@@ -5,8 +5,7 @@ These days its quite common for android malware to perform a number of anti-emul
 For example, lets say we want a malicious function to occur when our phone is 'accelerating'. Our accelerometer has 3 axis points of information, from there is quite easy to calculate a formula to determine whether our device is moving realistically or not.
 
 This tutorial will document some basic frida techniques to bypass sensor injection by overloading android source code functions within our taget process. It may be easier to overload our specific function to return true, but for automation purposes overloading our sensor returns makes life easier for dynamic analysis. 
-\
-\
+<br />
 
 
 ## Basic frida script setup
@@ -141,6 +140,7 @@ Working with Android anytime I see 'Impl' on the end of a function, it tends to 
 
 <br />
 <br />
+
 ```
 var systemSensorManager = Java.use('android.hardware.SystemSensorManager');
      systemSensorManager.registerListenerImpl.overload('android.hardware.SensorEventListener', 'android.hardware.Sensor',
@@ -178,9 +178,6 @@ From our research previously on the Android Developer website, we should see som
 static final class SensorEventQueue extends BaseEventQueue {
         private final SensorEventListener mListener;
         private final SparseArray<SensorEvent> mSensorsEvents = new SparseArray<SensorEvent>();
-
-... 
-... 
 
 @Override
         protected void dispatchSensorEvent(int handle, float[] values, int inAccuracy,
