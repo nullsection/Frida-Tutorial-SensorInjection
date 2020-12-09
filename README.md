@@ -157,7 +157,6 @@ We can see we're looking in the corect place. For more useful information you ca
 
 <br />
 <br />
-<br />
 
 ## Injecting Sensor Values
 
