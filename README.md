@@ -12,8 +12,8 @@ This tutorial will document some basic frida techniques to bypass sensor injecti
 ## Basic frida script setup
 
 For every frida script this will generally be your basic format. I won't cover how to set up your AVD with frida-server or adb commands as that is well documented elsewhere. In this example I'll be using a test APK that I made that is located in the /APK/ of this project. 
-\
-\
+<br />
+<br />
 
 ###### fridaScript.py
 ```
@@ -38,8 +38,8 @@ time.sleep(1)  # fails without this sleep
 device.resume(pid)
 sys.stdin.read()
 ```
-\
-\
+<br />
+<br />
 
 ###### Sensors.js
 ```
@@ -52,9 +52,8 @@ send("Smokescreen!")
 
 
 ```
-\
-\
-
+<br />
+<br />
 
 ###### Sensor apk
 
@@ -103,8 +102,8 @@ My accelerometer and gyro source code snippets for this application. Worth openi
 
 
 ```
-\
-\
+<br />
+<br />
 
 
 
@@ -115,8 +114,8 @@ Based on the code snippet  ``` sensorManager = ( SensorManager) getSystemService
 
 > https://github.com/AndroidSDKSources - Find your AVD SDK. 
 
-\
-\
+<br />
+<br />
 
 
 Doing some research on the Android Dev website we can find information on how Android handles sensor events. 
@@ -126,8 +125,8 @@ Doing some research on the Android Dev website we can find information on how An
 
 From this information we can assume that there must be a dispatcher for handling events. Doings a quick search of the repository for Sensor Manager returns the class android/hardware/SystemSensorManager.java. Lets take a look at the function registerListener to get an idea whether we're in the right spot.
 
-\
-\
+<br />
+<br />
 
 ```
  public boolean registerListener(SensorEventListener listener, Sensor sensor,
@@ -140,8 +139,8 @@ From this information we can assume that there must be a dispatcher for handling
 
 Working with Android anytime I see 'Impl' on the end of a function, it tends to be the one used to pass data oppose to the high level functions. So lets start there. 
 
-\
-\
+<br />
+<br />
 ```
 var systemSensorManager = Java.use('android.hardware.SystemSensorManager');
      systemSensorManager.registerListenerImpl.overload('android.hardware.SensorEventListener', 'android.hardware.Sensor',
@@ -162,9 +161,10 @@ We can see we're looking in the corect place. For more useful information you ca
 > {'type': 'send', 'payload': 'Smokescreen!'}
 
 > {'type': 'send', 'payload': 'Hooked for sensor: {Sensor name="Goldfish 3-axis Accelerometer", vendor="The Android Open Source Project", version=1, type=1, maxRange=2.8, resolution=2.480159E-4, power=3.0, minDelay=10000}'}
-\
-\
-\
+
+<br />
+<br />
+<br />
 ### Injecting Sensor Values
 
 
