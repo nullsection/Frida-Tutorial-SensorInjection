@@ -200,12 +200,32 @@ static final class SensorEventQueue extends BaseEventQueue {
             // call onAccuracyChanged() only if the value changes
             final int accuracy = mSensorAccuracies.get(handle);
             if ((t.accuracy >= 0) && (accuracy != t.accuracy)) {
-                mSensorAccuracies.put(handle, t.accuracy);
+                mSensorAccuracies.put(handle t.accuracy);
                 mListener.onAccuracyChanged(t.sensor, t.accuracy);
             }
             mListener.onSensorChanged(t);
         }
 ```
 
+
+So from this source code we know that the listener registered  for the sensor gets onSensorChanged called. We know we're in the correct place from the android docs, and each handler will receive event updates from this method. 
+<br>
+Here is what our hook should look like:
+
+
+```
+var newSensorValue = 10
+var sensorEventQueue = Java.use('android.hardware.SystemSensorManager$SensorEventQueue');
+sensorEventQueue.dispatchSensorEvent.overload('int', '[F', 'int', 'long').implementation = function(handle, values, accuracy, timestamp) {
+
+// IIRC according to the android docs we can have a large amount of sensor data sent through an array. For the sake we're assuming we can have 7 points of data
+var newValues = [newSensorValue, newSensorValue, newSensorValue, newSensorValue, newSensorValue, newSensorValue, newSensorValue, newSensorValue]
+
+return this.dispatchSensorEvent(handle, newSensorValues, accuracy, timestamp)
+
+
+
+}
+```
 
 
