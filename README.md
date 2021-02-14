@@ -218,14 +218,14 @@ var newSensorValue = 10
 var sensorEventQueue = Java.use('android.hardware.SystemSensorManager$SensorEventQueue');
 sensorEventQueue.dispatchSensorEvent.overload('int', '[F', 'int', 'long').implementation = function(handle, values, accuracy, timestamp) {
 
-// IIRC according to the android docs we can have a large amount of sensor data sent through an array. For the sake we're assuming we can have 7 points of data
+// IIRC according to the android docs we can have a large amount of sensor data sent through an array. For the sake we're assuming we can have a max of 7 points of data
 var newValues = [newSensorValue, newSensorValue, newSensorValue, newSensorValue, newSensorValue, newSensorValue, newSensorValue, newSensorValue]
 
 return this.dispatchSensorEvent(handle, newSensorValues, accuracy, timestamp)
 
-
-
 }
 ```
+
+
 
 
